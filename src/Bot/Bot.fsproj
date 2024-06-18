@@ -10,6 +10,7 @@
     <Compile Include="Types.fs" />
     <Compile Include="Config.fs" />
     <Compile Include="Constants.fs" />
+    <Compile Include="Util.fs" />
     <Compile Include="Api/Telegram.fs" />
     <Compile Include="Api/GoogleDrive.fs" />
     <Compile Include="Actions.fs" />
@@ -18,8 +19,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Funogram" Version="3.0.1" />
-    <PackageReference Include="Funogram.Telegram" Version="7.3.0.1" />
     <PackageReference Include="Google.Apis.Auth" Version="1.68.0" />
     <PackageReference Include="Google.Apis.Drive.v3" Version="1.68.0.3428" />
   </ItemGroup>

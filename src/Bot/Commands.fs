@@ -22,14 +22,13 @@ let createCommand (command: Types.Command): CommandInfo =
 let getCommand (command: Types.Command): string =
   createCommand(command).command
 
-let createHandler (handler: Types.CommandHandler) (context) =
+let createHandler (handler: Types.CommandHandler) (context: Types.UserMessagePayload) =
   match handler with
   | Types.CommandHandler.ListFile execute -> 
-    execute (Config.get Config.Env.DRIVE_FOLDER_ID)
-    |> formatFileMessage
-    |> Actions.sendMessage context
+    let message =
+      execute (Config.get Config.Env.DRIVE_FOLDER_ID)
+      |> formatFileMessage
+
+    Actions.sendMessage {UserID = context.UserID; Text = message}
   | Types.CommandHandler.GetFile execute ->
-    execute (context.Update.Message.Value.Text.Value) 
-    |> List.singleton
-    |> formatFileMessage
-    |> Actions.sendMessage context
+    ()
