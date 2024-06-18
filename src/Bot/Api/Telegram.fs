@@ -3,7 +3,7 @@ module Api.Telegram
 open Types
 
 let private baseUrl = System.Uri("https://api.telegram.org")
-let botToken = Config.get Config.Env.BOT_TOKEN
+let private botToken = Config.get Config.Env.BOT_TOKEN
 let private apiUrl = System.Uri(baseUrl, $"{baseUrl.AbsoluteUri}bot{botToken}")
 
 let private telegramApi (api: string) (method: System.Net.Http.HttpMethod) (requestOption: Types.Request) =
