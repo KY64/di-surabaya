@@ -18,7 +18,7 @@ let private formatFileMessage (files: Types.File list) =
 let handleCommand (context: Types.UserMessagePayload) (handler: Types.CommandHandler) =
   let command = 
     match context with
-    | { Command = Some command } -> command
+    | { Command = Some command } when context.UserID.ToString() = Config.get Config.Env.ADMIN_ID -> command
     | _ -> Types.Command.NoCommand
 
   match handler with
