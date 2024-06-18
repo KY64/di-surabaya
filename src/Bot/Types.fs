@@ -25,19 +25,32 @@ type SendMessagePayload = {
   Text: string
 }
 
-type UserMessagePayload = {
-  UserID: int32
-  Command: string option
-  Text: string option
-}
-
 type Command =
   | ListFile
   | GetFile
+  | NoCommand
+
+  static member find (input: string): Command option =
+    match input with
+    | input when input = Command.ListFile.get.command -> Some Command.ListFile
+    | input when input = Command.GetFile.get.command -> Some Command.GetFile
+    | _ -> None
+
+  member this.get: CommandInfo = 
+    match this with
+    | ListFile -> { command = "/list" ; description = "List file in a folder" }
+    | GetFile -> { command = "/file" ; description = "Get file information" }
+    | NoCommand -> { command = "" ; description = "" }
 
 type CommandHandler =
   | ListFile of (string -> File list)
   | GetFile of (string -> File)
+
+type UserMessagePayload = {
+  UserID: int32
+  Command: Command option
+  Text: string option
+}
 
 module Telegram =
 
@@ -64,7 +77,7 @@ module Lambda =
 
 module Request =
 
-  type WebhookMessageFromPayload = {
+  type TelegramWebhookMessageFromPayload = {
     [<System.Runtime.Serialization.DataMember(Name = "id")>]
     Id: int
     [<System.Runtime.Serialization.DataMember(Name = "is_bot")>]
@@ -73,12 +86,12 @@ module Request =
     Username: string
   }
 
-  type WebhookMessageChatPayload = {
+  type TelegramWebhookMessageChatPayload = {
     [<System.Runtime.Serialization.DataMember(Name = "type")>]
     Type: string
   }
 
-  type WebhookMessageEntitiesPayload = {
+  type TelegramWebhookMessageEntitiesPayload = {
     [<System.Runtime.Serialization.DataMember(Name = "offset")>]
     Offset: int
     [<System.Runtime.Serialization.DataMember(Name = "length")>]
@@ -87,22 +100,22 @@ module Request =
     Type: string
   }
 
-  type WebhookMessagePayload = {
+  type TelegramWebhookMessagePayload = {
     [<System.Runtime.Serialization.DataMember(Name = "message_id")>]
     MessageId: int
     [<System.Runtime.Serialization.DataMember(Name = "from")>]
-    From: WebhookMessageFromPayload
+    From: TelegramWebhookMessageFromPayload
     [<System.Runtime.Serialization.DataMember(Name = "chat")>]
-    Chat: WebhookMessageChatPayload
+    Chat: TelegramWebhookMessageChatPayload
     [<System.Runtime.Serialization.DataMember(Name = "text")>]
     Text: string
     [<System.Runtime.Serialization.DataMember(Name = "entities")>]
-    Entities: WebhookMessageEntitiesPayload list option
+    Entities: TelegramWebhookMessageEntitiesPayload list option
   }
 
-  type WebhookPayload = {
+  type TelegramWebhookPayload = {
     [<System.Runtime.Serialization.DataMember(Name = "id")>]
     UpdateId: int
     [<System.Runtime.Serialization.DataMember(Name = "message")>]
-    Message: WebhookMessagePayload
+    Message: TelegramWebhookMessagePayload
   }

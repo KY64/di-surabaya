@@ -22,3 +22,32 @@ type Bot =
       Content = Some (System.Net.Http.Json.JsonContent.Create(data))
     }
     |> telegramApi "sendMessage" Types.Method.POST
+
+let processWebhook (payload: Types.Request.TelegramWebhookPayload): Types.UserMessagePayload =
+  let checkCommand (entity: Types.Request.TelegramWebhookMessageEntitiesPayload) =
+    match entity with
+    | entity when entity.Type = "bot_command" -> Some entity
+    | _ -> None
+
+  let isCommand =
+    let length =
+      payload.Message.Entities
+      |> Option.defaultWith (fun () -> [])
+      |> List.choose checkCommand
+      |> List.length
+    length > 0
+
+  let text = ("", Some payload.Message.Text) ||> Option.defaultValue
+  match isCommand with
+  | true ->
+    {
+      UserID = payload.Message.From.Id
+      Command = Command.find(text)
+      Text = Some payload.Message.Text
+    }
+  | false ->
+    {
+      UserID = payload.Message.From.Id
+      Command = None
+      Text = Some payload.Message.Text
+    }

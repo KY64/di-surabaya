@@ -27,7 +27,10 @@ let initialize (credential: Credential) =
     UseJwtAccessWithScopes=false
   )
 
-  let serviceAccount = ServiceAccountCredential(initializeServiceAccount.FromPrivateKey(credential.private_key), Scopes=credential.scopes)
+  let serviceAccount = ServiceAccountCredential(
+   initializeServiceAccount.FromPrivateKey(credential.private_key),
+   Scopes=credential.scopes
+  )
 
   let accessToken = serviceAccount.GetAccessTokenForRequestAsync(credential.auth_uri)
   accessToken.Wait()

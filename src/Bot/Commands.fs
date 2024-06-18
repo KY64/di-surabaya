@@ -14,21 +14,20 @@ let private formatFileMessage (files: Types.File list) =
   ("", files)
   ||> List.fold formatFileDetails
 
-let createCommand (command: Types.Command): CommandInfo =
-  match command with
-  | Types.ListFile -> { command = "/list" ; description = "List file in a folder" }
-  | Types.GetFile -> { command = "/file" ; description = "Get file information" }
 
-let getCommand (command: Types.Command): string =
-  createCommand(command).command
+let handleCommand (context: Types.UserMessagePayload) (handler: Types.CommandHandler) =
+  let command = 
+    match context with
+    | { Command = Some command } -> command
+    | _ -> Types.Command.NoCommand
 
-let createHandler (handler: Types.CommandHandler) (context: Types.UserMessagePayload) =
   match handler with
-  | Types.CommandHandler.ListFile execute -> 
+  | Types.CommandHandler.ListFile execute when command = Types.Command.ListFile -> 
     let message =
       execute (Config.get Config.Env.DRIVE_FOLDER_ID)
       |> formatFileMessage
 
     Actions.sendMessage {UserID = context.UserID; Text = message}
-  | Types.CommandHandler.GetFile execute ->
+  | Types.CommandHandler.GetFile execute when command = Types.Command.GetFile ->
     ()
+  | _ -> ()
