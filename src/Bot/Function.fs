@@ -19,7 +19,7 @@ type Function() =
     /// <returns>StatusCode</returns>
     member __.FunctionHandler (event: Types.Lambda.ApiGatewayEvent) (context: ILambdaContext) =
       let botEndpoint = $"/{Constants.botToken}"
-      let notifyEndpoint = Config.get Config.Env.NOTIFY_ENDPOINT
+      let notifyEndpoint = System.Uri(Config.get Config.Env.NOTIFY_ENDPOINT)
       let headers = ("HEADERS\n", event.headers) ||> Map.fold (fun s k v -> s + $"{k}: {v}\n")
       context.Logger.Log $"Received request on route {event.requestContext.routeKey} with {headers}"
       context.Logger.Log $"Body request {event.body}"
@@ -51,7 +51,16 @@ type Function() =
         {| 
           statusCode = System.Net.HttpStatusCode.OK
         |}
-      | endpoint when endpoint = notifyEndpoint ->
+      | endpoint when endpoint = notifyEndpoint.AbsolutePath ->
+        let parsedPayload: Types.UserMessagePayload = {
+          UserID = Int32.Parse((Config.get Config.Env.ADMIN_ID))
+          Command = Some Types.ListFile
+          Text = Some ""
+        }
+        credentials
+        |> Api.GoogleDrive.initialize
+        |> Api.GoogleDrive.listFile
+        |> Commands.handleCommand parsedPayload
         {| 
           statusCode = System.Net.HttpStatusCode.OK
         |}
