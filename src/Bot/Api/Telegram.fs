@@ -11,16 +11,9 @@ let private telegramApi (api: string) (method: System.Net.Http.HttpMethod) (requ
   requestOption
   |> Util.fetch Util.client endpoint method
 
-type SendMessagePayload = {
-  [<System.Runtime.Serialization.DataMember(Name = "chat_id")>]
-  ChatId: int32
-  [<System.Runtime.Serialization.DataMember(Name = "text")>]
-  Text: string
-}
-
 type Bot =
   static member sendMessage (payload: Types.SendMessagePayload) = 
-    let data = {
+    let data: Types.Telegram.SendMessagePayload = {
       ChatId = payload.UserID
       Text = payload.Text
     }

@@ -10,19 +10,6 @@ open System
 [<assembly: LambdaSerializer(typeof<Amazon.Lambda.Serialization.SystemTextJson.DefaultLambdaJsonSerializer>)>]
 ()
 
-type RequestContext = {
-  domainName: string
-  routeKey: string
-}
-
-type LambdaEvent = {
-  body: string
-  rawPath: string
-  headers: System.Collections.Generic.IDictionary<string, string>
-  requestContext: RequestContext
-  http: Object list
-}
-
 type Function() =
     /// <summary>
     /// A simple function that takes a string and does a ToUpper
@@ -30,5 +17,22 @@ type Function() =
     /// <param name="input">The event for the Lambda function handler to process.</param>
     /// <param name="context">The ILambdaContext that provides methods for logging and describing the Lambda environment.</param>
     /// <returns></returns>
-    member __.FunctionHandler (event: LambdaEvent) (_: ILambdaContext) =
-        "Ok"
+    member __.FunctionHandler (event: Types.Lambda.ApiGatewayEvent) (context: ILambdaContext) =
+      let botEndpoint = $"/{Config.get Config.Env.BOT_TOKEN}"
+      let notifyEndpoint = Config.get Config.Env.NOTIFY_ENDPOINT
+      let headers = ("HEADERS\n", event.headers) ||> Map.fold (fun s k v -> s + $"{k}: {v}\n")
+      context.Logger.Log $"Received request on route {event.requestContext.routeKey} with {headers}"
+
+      match event.rawPath with
+      | endpoint when endpoint = botEndpoint ->
+        {| 
+          statusCode = System.Net.HttpStatusCode.OK
+        |}
+      | endpoint when endpoint = notifyEndpoint ->
+        {| 
+          statusCode = System.Net.HttpStatusCode.OK
+        |}
+      | _ ->
+        {| 
+          statusCode = System.Net.HttpStatusCode.NotImplemented
+        |}

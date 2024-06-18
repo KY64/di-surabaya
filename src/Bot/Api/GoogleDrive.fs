@@ -41,7 +41,10 @@ let listFile (service: DriveService): Types.CommandHandler =
     let fileList = listRequest.Execute()
     let getFileInfo (googleFile: Google.Apis.Drive.v3.Data.File): Types.File =
       let fileModifiedTime = googleFile.ModifiedTimeDateTimeOffset.Value.ToUniversalTime()
-      { name = googleFile.Name; id = googleFile.Id; url = googleFile.WebViewLink; modifiedTime = fileModifiedTime.DateTime }
+      { name = googleFile.Name
+        id = googleFile.Id
+        url = googleFile.WebViewLink
+        modifiedTime = fileModifiedTime.DateTime }
 
     fileList.Files 
     |> Seq.map getFileInfo 
