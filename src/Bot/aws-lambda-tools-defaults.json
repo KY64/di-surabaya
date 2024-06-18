@@ -8,6 +8,7 @@
   "profile": "",
   "region": "us-east-1",
   "configuration": "Release",
+  "function-name": "di-surabaya-bot-webhook",
   "function-runtime": "dotnet8",
   "function-memory-size": 512,
   "function-timeout": 10,

@@ -10,6 +10,18 @@ open System
 [<assembly: LambdaSerializer(typeof<Amazon.Lambda.Serialization.SystemTextJson.DefaultLambdaJsonSerializer>)>]
 ()
 
+type RequestContext = {
+  domainName: string
+  routeKey: string
+}
+
+type LambdaEvent = {
+  body: string
+  rawPath: string
+  headers: System.Collections.Generic.IDictionary<string, string>
+  requestContext: RequestContext
+  http: Object list
+}
 
 type Function() =
     /// <summary>
@@ -18,7 +30,5 @@ type Function() =
     /// <param name="input">The event for the Lambda function handler to process.</param>
     /// <param name="context">The ILambdaContext that provides methods for logging and describing the Lambda environment.</param>
     /// <returns></returns>
-    member __.FunctionHandler (input: string) (_: ILambdaContext) =
-        match input with
-        | null -> String.Empty
-        | _ -> input.ToUpper()
+    member __.FunctionHandler (event: LambdaEvent) (_: ILambdaContext) =
+        "Ok"
