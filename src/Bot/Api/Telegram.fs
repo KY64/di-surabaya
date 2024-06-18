@@ -19,7 +19,7 @@ type Bot =
     }
     {
       Headers = []
-      Content = Some (System.Net.Http.Json.JsonContent.Create(data))
+      Content = Some (System.Net.Http.Json.JsonContent.Create(inputValue=data, options=Constants.jsonDeserializeOptions))
     }
     |> telegramApi "sendMessage" Types.Method.POST
 

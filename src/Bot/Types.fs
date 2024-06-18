@@ -55,9 +55,7 @@ type UserMessagePayload = {
 module Telegram =
 
   type SendMessagePayload = {
-    [<System.Runtime.Serialization.DataMember(Name = "chat_id")>]
     ChatId: int32
-    [<System.Runtime.Serialization.DataMember(Name = "text")>]
     Text: string
   }
 
@@ -78,44 +76,30 @@ module Lambda =
 module Request =
 
   type TelegramWebhookMessageFromPayload = {
-    [<System.Runtime.Serialization.DataMember(Name = "id")>]
     Id: int
-    [<System.Runtime.Serialization.DataMember(Name = "is_bot")>]
     IsBot: bool
-    [<System.Runtime.Serialization.DataMember(Name = "username")>]
     Username: string
   }
 
   type TelegramWebhookMessageChatPayload = {
-    [<System.Runtime.Serialization.DataMember(Name = "type")>]
     Type: string
   }
 
   type TelegramWebhookMessageEntitiesPayload = {
-    [<System.Runtime.Serialization.DataMember(Name = "offset")>]
     Offset: int
-    [<System.Runtime.Serialization.DataMember(Name = "length")>]
     Length: int
-    [<System.Runtime.Serialization.DataMember(Name = "Type")>]
     Type: string
   }
 
   type TelegramWebhookMessagePayload = {
-    [<System.Runtime.Serialization.DataMember(Name = "message_id")>]
     MessageId: int
-    [<System.Runtime.Serialization.DataMember(Name = "from")>]
     From: TelegramWebhookMessageFromPayload
-    [<System.Runtime.Serialization.DataMember(Name = "chat")>]
     Chat: TelegramWebhookMessageChatPayload
-    [<System.Runtime.Serialization.DataMember(Name = "text")>]
     Text: string
-    [<System.Runtime.Serialization.DataMember(Name = "entities")>]
     Entities: TelegramWebhookMessageEntitiesPayload list option
   }
 
   type TelegramWebhookPayload = {
-    [<System.Runtime.Serialization.DataMember(Name = "id")>]
     UpdateId: int
-    [<System.Runtime.Serialization.DataMember(Name = "message")>]
     Message: TelegramWebhookMessagePayload
   }

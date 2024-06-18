@@ -18,10 +18,11 @@ type Function() =
     /// <param name="context">The ILambdaContext that provides methods for logging and describing the Lambda environment.</param>
     /// <returns>StatusCode</returns>
     member __.FunctionHandler (event: Types.Lambda.ApiGatewayEvent) (context: ILambdaContext) =
-      let botEndpoint = $"/{Config.get Config.Env.BOT_TOKEN}"
+      let botEndpoint = $"/{Constants.botToken}"
       let notifyEndpoint = Config.get Config.Env.NOTIFY_ENDPOINT
       let headers = ("HEADERS\n", event.headers) ||> Map.fold (fun s k v -> s + $"{k}: {v}\n")
       context.Logger.Log $"Received request on route {event.requestContext.routeKey} with {headers}"
+      context.Logger.Log $"Body request {event.body}"
 
       let credentials: Api.GoogleDrive.Credential = {
         auth_uri = Config.get Config.Env.GOOGLE_DRIVE_OAUTH_AUTH_URI
@@ -37,7 +38,11 @@ type Function() =
 
       match event.rawPath with
       | endpoint when endpoint = botEndpoint ->
-        let payload = System.Text.Json.JsonSerializer.Deserialize<Types.Request.TelegramWebhookPayload>(event.body)
+        let payload = System.Text.Json.JsonSerializer.Deserialize<Types.Request.TelegramWebhookPayload>(
+          json=event.body,
+          options=Constants.jsonDeserializeOptions
+        )
+        context.Logger.Log $"Serialized payload {payload}"
         let parsedPayload = Api.Telegram.processWebhook(payload)
         credentials
         |> Api.GoogleDrive.initialize
