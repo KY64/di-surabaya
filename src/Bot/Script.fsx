@@ -86,8 +86,16 @@ let telegramApi (api: string) (method: System.Net.Http.HttpMethod) (requestOptio
   |> fetch client endpoint method
 
 type Api =
+  static member deleteWebhook = telegramApi "deleteWebhook?drop_pending_updates=True" Method.POST
   static member setWebhook = telegramApi "setWebhook" Method.POST
   static member setCommands = telegramApi "setMyCommands" Method.POST
+
+let deleteWebhook =
+  {
+    Headers = []
+    Content = None  
+  }
+  |> Api.deleteWebhook
 
 let setWebhook =
   {
@@ -129,7 +137,7 @@ let responses =
       url = task.RequestMessage.RequestUri.LocalPath
       result = task.Content.ReadAsStringAsync().Result
     |}
-  System.Threading.Tasks.Task.WhenAll([setWebhook; setCommands]).Result
+  System.Threading.Tasks.Task.WhenAll([deleteWebhook; setWebhook; setCommands]).Result
   |> Array.map formatResponse
   |> Array.iter (printfn "%A")
 
