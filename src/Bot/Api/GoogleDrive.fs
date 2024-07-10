@@ -16,6 +16,18 @@ type Credential = {
   scopes: string list
 }
 
+let credentials: Credential = {
+  auth_uri = "https://accounts.google.com/o/oauth2/auth"
+  client_email = Config.get Config.Env.GOOGLE_DRIVE_OAUTH_CLIENT_EMAIL
+  client_id = Config.get Config.Env.GOOGLE_DRIVE_OAUTH_CLIENT_ID
+  private_key = Config.get Config.Env.GOOGLE_DRIVE_OAUTH_PRIVATE_KEY
+  private_key_id = Config.get Config.Env.GOOGLE_DRIVE_OAUTH_PRIVATE_KEY_ID
+  project_id = Config.get Config.Env.GOOGLE_DRIVE_OAUTH_PROJECT_ID
+  token_uri = "https://oauth2.googleapis.com/token"
+  universe_domain = "googleapis.com"
+  scopes = []
+}
+
 let initialize (credential: Credential) = 
 
   let initializeServiceAccount = ServiceAccountCredential.Initializer(

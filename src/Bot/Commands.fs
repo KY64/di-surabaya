@@ -14,20 +14,33 @@ let private formatFileMessage (files: Types.File list) =
   ("", files)
   ||> List.fold formatFileDetails
 
+let mapUpdateMapInput (input: string): Option<Types.Map * string> =
+  match input.Split(" ") with
+  | splitInput when splitInput.Length = 3 ->
+    Some (Types.Map.Create(splitInput[1]), splitInput[2])
+  | _ ->
+    None
+
+let parseCommand (context: Types.UserMessagePayload) = 
+  match context with
+  | { Command = Some command } when context.UserID.ToString() = Config.get Config.Env.ADMIN_ID -> command
+  | _ -> Types.Command.NoCommand
 
 let handleCommand (context: Types.UserMessagePayload) (handler: Types.CommandHandler) =
-  let command = 
-    match context with
-    | { Command = Some command } when context.UserID.ToString() = Config.get Config.Env.ADMIN_ID -> command
-    | _ -> Types.Command.NoCommand
-
   match handler with
-  | Types.CommandHandler.ListFile execute when command = Types.Command.ListFile -> 
+  | Types.CommandHandler.ListFile execute -> 
     let message =
       execute (Config.get Config.Env.DRIVE_FOLDER_ID)
       |> formatFileMessage
 
     Actions.sendMessage {UserID = context.UserID; Text = message}
-  | Types.CommandHandler.GetFile execute when command = Types.Command.GetFile ->
-    ()
-  | _ -> ()
+  | Types.CommandHandler.UpdateMap execute ->
+    match context.Text with
+    | Some text ->
+      match mapUpdateMapInput text with
+      | Some (mapType, mapId) ->
+        let message =
+          execute mapType mapId
+        Actions.sendMessage {UserID = context.UserID; Text = message}
+      | None -> ()
+    | None -> ()

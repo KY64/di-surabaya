@@ -32,6 +32,7 @@ type Method =
 
 let commands = [
   { command = "/list"; description = "List file in a drive folder" }
+  { command = "/update_map" ; description = "Update map information" }
 ]
 
 let getEnv = System.Environment.GetEnvironmentVariable

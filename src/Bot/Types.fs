@@ -8,6 +8,17 @@ type Request = {
 type Method =
   static member POST = System.Net.Http.HttpMethod.Post
 
+type Map =
+  | Bus
+  | Train
+  | Undefined
+  
+  static member Create (input: string) =
+    match input with
+    | input when input.ToLower() = "bus" -> Map.Bus
+    | input when input.ToLower() = "train" -> Map.Train
+    | _ -> Undefined
+
 type File = {
   name: string
   id: string
@@ -27,24 +38,24 @@ type SendMessagePayload = {
 
 type Command =
   | ListFile
-  | GetFile
+  | UpdateMap
   | NoCommand
 
   static member find (input: string): Command option =
     match input with
     | input when input = Command.ListFile.get.command -> Some Command.ListFile
-    | input when input = Command.GetFile.get.command -> Some Command.GetFile
+    | input when input = Command.UpdateMap.get.command -> Some Command.UpdateMap
     | _ -> None
 
   member this.get: CommandInfo = 
     match this with
     | ListFile -> { command = "/list" ; description = "List file in a folder" }
-    | GetFile -> { command = "/file" ; description = "Get file information" }
+    | UpdateMap -> { command = "/update_map" ; description = "Update map information" }
     | NoCommand -> { command = "" ; description = "" }
 
 type CommandHandler =
   | ListFile of (string -> File list)
-  | GetFile of (string -> File)
+  | UpdateMap of (Map -> string -> string)
 
 type UserMessagePayload = {
   UserID: int32

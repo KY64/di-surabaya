@@ -17,6 +17,7 @@
     <Compile Include="Api/Telegram.fs" />
     <Compile Include="Api/GoogleDrive.fs" />
     <Compile Include="Api/Github.fs" />
+    <Compile Include="Api/AWS.fs" />
     <Compile Include="Actions.fs" />
     <Compile Include="Commands.fs" />
     <Compile Include="Function.fs" />
@@ -27,6 +28,7 @@
   <ItemGroup>
     <PackageReference Include="Amazon.Lambda.Core" Version="2.2.0" />
     <PackageReference Include="Amazon.Lambda.Serialization.SystemTextJson" Version="2.4.1" />
+    <PackageReference Include="AWSSDK.S3" Version="3.7.310.4" />
     <PackageReference Include="Google.Apis.Auth" Version="1.68.0" />
     <PackageReference Include="Google.Apis.Drive.v3" Version="1.68.0.3428" />
     <PackageReference Include="Microsoft.IdentityModel.JsonWebTokens" Version="8.0.0-preview1" />

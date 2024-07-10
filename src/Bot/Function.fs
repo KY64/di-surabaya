@@ -18,23 +18,18 @@ type Function() =
     /// <param name="context">The ILambdaContext that provides methods for logging and describing the Lambda environment.</param>
     /// <returns>StatusCode</returns>
     member __.FunctionHandler (event: Types.Lambda.ApiGatewayEvent) (context: ILambdaContext) =
+      let getConfiguration = Api.AWS.getObject (new Amazon.S3.AmazonS3Client())
+      let configurationStream = (getConfiguration (Config.get Config.Env.CONFIGURATION_BUCKET) (Config.get Config.Env.CONFIGURATION_FILE)).Result.ResponseStream
+      let decodedContent = (new System.IO.StreamReader(configurationStream)).ReadToEnd()
+      decodedContent.Split('\n')
+      |> Util.parseEnv
+      |> Util.injectConfiguration
+
       let botEndpoint = $"/{Constants.botToken}"
       let notifyEndpoint = System.Uri(Config.get Config.Env.NOTIFY_ENDPOINT)
       let headers = ("HEADERS\n", event.headers) ||> Map.fold (fun s k v -> s + $"{k}: {v}\n")
       context.Logger.Log $"Received request on route {event.requestContext.routeKey} with {headers}"
       context.Logger.Log $"Body request {event.body}"
-
-      let credentials: Api.GoogleDrive.Credential = {
-        auth_uri = Config.get Config.Env.GOOGLE_DRIVE_OAUTH_AUTH_URI
-        client_email = Config.get Config.Env.GOOGLE_DRIVE_OAUTH_CLIENT_EMAIL
-        client_id = Config.get Config.Env.GOOGLE_DRIVE_OAUTH_CLIENT_ID
-        private_key = Config.get Config.Env.GOOGLE_DRIVE_OAUTH_PRIVATE_KEY
-        private_key_id = Config.get Config.Env.GOOGLE_DRIVE_OAUTH_PRIVATE_KEY_ID
-        project_id = Config.get Config.Env.GOOGLE_DRIVE_OAUTH_PROJECT_ID
-        token_uri = Config.get Config.Env.GOOGLE_DRIVE_OAUTH_TOKEN_URI
-        universe_domain = Config.get Config.Env.GOOGLE_DRIVE_OAUTH_UNIVERSE_DOMAIN
-        scopes = [Google.Apis.Drive.v3.DriveService.Scope.DriveReadonly]
-      }
 
       match event.rawPath with
       | endpoint when endpoint = botEndpoint ->
@@ -44,20 +39,40 @@ type Function() =
         )
         context.Logger.Log $"Serialized payload {payload}"
         let parsedPayload = Api.Telegram.processWebhook(payload)
-        credentials
-        |> Api.GoogleDrive.initialize
-        |> Api.GoogleDrive.listFile
-        |> Commands.handleCommand parsedPayload
-        {| 
-          statusCode = System.Net.HttpStatusCode.OK
-        |}
+        match Commands.parseCommand parsedPayload with
+        | Types.Command.ListFile ->
+          { Api.GoogleDrive.credentials with scopes = [Google.Apis.Drive.v3.DriveService.Scope.DriveReadonly] }
+          |> Api.GoogleDrive.initialize
+          |> Api.GoogleDrive.listFile
+          |> Commands.handleCommand parsedPayload
+          {| 
+            statusCode = System.Net.HttpStatusCode.OK
+          |}
+        | Types.Command.UpdateMap ->
+          let updateParams: Api.Github.UpdateMapParams =
+            {
+              Owner = Config.get Config.Env.GITHUB_USERNAME
+              Repository = Config.get Config.Env.GITHUB_REPOSITORY
+              RepositoryEnvironment = Config.get Config.Env.GITHUB_REPOSITORY_ENVIRONMENT
+              JobId = Config.get Config.Env.GITHUB_ACTION_JOB_ID
+            }
+          updateParams
+          |> Api.Github.updateMap
+          |> Commands.handleCommand parsedPayload
+          {| 
+            statusCode = System.Net.HttpStatusCode.OK
+          |}
+        | Types.Command.NoCommand ->
+          {| 
+            statusCode = System.Net.HttpStatusCode.NotImplemented
+          |}
       | endpoint when endpoint = notifyEndpoint.AbsolutePath ->
         let parsedPayload: Types.UserMessagePayload = {
           UserID = Int32.Parse((Config.get Config.Env.ADMIN_ID))
           Command = Some Types.ListFile
           Text = Some ""
         }
-        credentials
+        { Api.GoogleDrive.credentials with scopes = [Google.Apis.Drive.v3.DriveService.Scope.DriveReadonly] }
         |> Api.GoogleDrive.initialize
         |> Api.GoogleDrive.listFile
         |> Commands.handleCommand parsedPayload
