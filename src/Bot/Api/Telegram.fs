@@ -42,7 +42,7 @@ let processWebhook (payload: Types.Request.TelegramWebhookPayload): Types.UserMe
   | true ->
     {
       UserID = payload.Message.From.Id
-      Command = Command.find(text)
+      Command = Command.find(text.Split(" ")[0])
       Text = Some payload.Message.Text
     }
   | false ->

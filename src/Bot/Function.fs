@@ -54,7 +54,7 @@ type Function() =
               Owner = Config.get Config.Env.GITHUB_USERNAME
               Repository = Config.get Config.Env.GITHUB_REPOSITORY
               RepositoryEnvironment = Config.get Config.Env.GITHUB_REPOSITORY_ENVIRONMENT
-              JobId = Config.get Config.Env.GITHUB_ACTION_JOB_ID
+              WorkflowId = Config.get Config.Env.GITHUB_ACTION_WORKFLOW_ID
             }
           updateParams
           |> Api.Github.updateMap
@@ -64,7 +64,7 @@ type Function() =
           |}
         | Types.Command.NoCommand ->
           {| 
-            statusCode = System.Net.HttpStatusCode.NotImplemented
+            statusCode = System.Net.HttpStatusCode.NoContent // Set this way so webhook will not retry the request
           |}
       | endpoint when endpoint = notifyEndpoint.AbsolutePath ->
         let parsedPayload: Types.UserMessagePayload = {

@@ -14,26 +14,26 @@ type UpdateEnvironmentParams = {
   EnvironmentVariableValue: string
 }
 
-type RerunWorkflowJobAfterUpdateEnvironmentParams = {
+type RerunWorkflowAfterUpdateEnvironmentParams = {
   Owner: string
   Repository: string
   RepositoryEnvironment: string
   EnvironmentVariableName: string
   EnvironmentVariableValue: string
-  JobId: string
+  WorkflowId: string
 }
 
-type RerunWorkflowJobParams = {
+type RerunWorkflowParams = {
   Owner: string
   Repository: string
-  JobId: string
+  WorkflowId: string
 }
 
 type UpdateMapParams = {
   Owner: string
   Repository: string
   RepositoryEnvironment: string
-  JobId: string
+  WorkflowId: string
 }
 
 type UpdateEnvironmentRequest = {
@@ -48,14 +48,14 @@ let privateKey = Config.get Config.Env.GITHUB_APPLICATION_PRIVATE_KEY
 let baseUrl = System.Uri("https://api.github.com")
 
 let githubApi (api: string) (method: System.Net.Http.HttpMethod) (requestOption: Types.Request) = 
-  let endpoint = Util.appendUri baseUrl api
+  let endpoint = System.Uri(baseUrl, api)
+  printfn "SEND REQUEST %A with %A" api requestOption
   requestOption
   |> Util.fetch Util.client endpoint method
 
 let private createJwt (clientId: string) =
   let rsaKey = System.Security.Cryptography.RSA.Create()
-  let encodedPrivateKey = System.Text.Encoding.UTF8.GetBytes(privateKey)
-  rsaKey.ImportRSAPrivateKey(encodedPrivateKey) |> ignore
+  rsaKey.ImportFromPem(privateKey) |> ignore
   let securityKey = new Microsoft.IdentityModel.Tokens.RsaSecurityKey(rsaKey)
   let algorithm = Microsoft.IdentityModel.Tokens.SecurityAlgorithms.RsaSha256
   let credentials = new Microsoft.IdentityModel.Tokens.SigningCredentials(securityKey, algorithm)
@@ -108,8 +108,8 @@ type ApiRequest =
       Ok $"Successfully update environment variable '{data.EnvironmentVariableName}' to '{data.EnvironmentVariableValue}'"
     | Error result ->
       Error $"Failed to update environment variable: {result.ReasonPhrase}"
-  static rerunWorkflowJob (data: RerunWorkflowJobParams) (accessToken: string) =
-    let endpoint = $"/repos/{data.Owner}/{data.Repository}/actions/jobs/{data.JobId}/rerun"
+  static rerunWorkflowJob (data: RerunWorkflowParams) (accessToken: string) =
+    let endpoint = $"/repos/{data.Owner}/{data.Repository}/actions/jobs/{data.WorkflowId}/rerun"
     let response =
       {
         Headers = [
@@ -122,11 +122,11 @@ type ApiRequest =
       |> githubApi endpoint System.Net.Http.HttpMethod.Post
     match response.Result with
     | Ok _ ->
-      Ok $"Successfully rerun workflow job '{data.JobId}'"
+      Ok $"Successfully rerun workflow job '{data.WorkflowId}'"
     | Error result ->
-      Error $"Failed to rerun workflow job '{data.JobId}': {result.ReasonPhrase}"
+      Error $"Failed to rerun workflow job '{data.WorkflowId}': {result.ReasonPhrase}"
 
-let private rerunWorkflowJobAfterUpdateEnvironment (config: RerunWorkflowJobAfterUpdateEnvironmentParams) =
+let private rerunWorkflowJobAfterUpdateEnvironment (config: RerunWorkflowAfterUpdateEnvironmentParams) =
   let updateEnvironmentParams: UpdateEnvironmentParams = 
     {
       Owner = config.Owner
@@ -135,13 +135,14 @@ let private rerunWorkflowJobAfterUpdateEnvironment (config: RerunWorkflowJobAfte
       EnvironmentVariableName = config.EnvironmentVariableName
       EnvironmentVariableValue = config.EnvironmentVariableValue
     }
-  let rerunWorkflowJobParams: RerunWorkflowJobParams =
+  let rerunWorkflowJobParams: RerunWorkflowParams =
     {
       Owner = config.Owner
       Repository = config.Repository
-      JobId = config.JobId
+      WorkflowId = config.WorkflowId
     }
   let accessToken = ApiRequest.createAccessToken clientId appId
+  printfn "ACCESS TOKEN %A" accessToken
   match
     accessToken
     |> Result.bind (ApiRequest.updateEnvironmentVariable updateEnvironmentParams)
@@ -154,6 +155,7 @@ let private rerunWorkflowJobAfterUpdateEnvironment (config: RerunWorkflowJobAfte
     error
 
 let updateMap (config: UpdateMapParams): Types.CommandHandler =
+  printfn "GITHUB PARAM %A" config
   let execute (mapType: Types.Map) (mapId: string) =
     let environmentVariableName =
       match mapType with
@@ -171,7 +173,7 @@ let updateMap (config: UpdateMapParams): Types.CommandHandler =
         RepositoryEnvironment = config.RepositoryEnvironment
         EnvironmentVariableName = name
         EnvironmentVariableValue = mapId
-        JobId = config.JobId
+        WorkflowId = config.WorkflowId
       }
       |> rerunWorkflowJobAfterUpdateEnvironment
     | None ->
