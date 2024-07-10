@@ -49,7 +49,6 @@ let baseUrl = System.Uri("https://api.github.com")
 
 let githubApi (api: string) (method: System.Net.Http.HttpMethod) (requestOption: Types.Request) = 
   let endpoint = System.Uri(baseUrl, api)
-  printfn "SEND REQUEST %A with %A" api requestOption
   requestOption
   |> Util.fetch Util.client endpoint method
 
@@ -108,8 +107,8 @@ type ApiRequest =
       Ok $"Successfully update environment variable '{data.EnvironmentVariableName}' to '{data.EnvironmentVariableValue}'"
     | Error result ->
       Error $"Failed to update environment variable: {result.ReasonPhrase}"
-  static rerunWorkflowJob (data: RerunWorkflowParams) (accessToken: string) =
-    let endpoint = $"/repos/{data.Owner}/{data.Repository}/actions/jobs/{data.WorkflowId}/rerun"
+  static rerunWorkflow (data: RerunWorkflowParams) (accessToken: string) =
+    let endpoint = $"/repos/{data.Owner}/{data.Repository}/actions/runs/{data.WorkflowId}/rerun"
     let response =
       {
         Headers = [
@@ -142,20 +141,18 @@ let private rerunWorkflowJobAfterUpdateEnvironment (config: RerunWorkflowAfterUp
       WorkflowId = config.WorkflowId
     }
   let accessToken = ApiRequest.createAccessToken clientId appId
-  printfn "ACCESS TOKEN %A" accessToken
   match
     accessToken
     |> Result.bind (ApiRequest.updateEnvironmentVariable updateEnvironmentParams)
   with
   | Ok _ ->
     accessToken
-    |> Result.bind (ApiRequest.rerunWorkflowJob rerunWorkflowJobParams)
+    |> Result.bind (ApiRequest.rerunWorkflow rerunWorkflowJobParams)
     |> Util.getResultValue
   | Error error ->
     error
 
 let updateMap (config: UpdateMapParams): Types.CommandHandler =
-  printfn "GITHUB PARAM %A" config
   let execute (mapType: Types.Map) (mapId: string) =
     let environmentVariableName =
       match mapType with
