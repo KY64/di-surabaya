@@ -39,14 +39,14 @@ type Function() =
 
         let googleDriveService = 
           {
-            auth_uri = Env("GOOGLE_DRIVE_OAUTH_AUTH_URI")
+            auth_uri = "https://accounts.google.com/o/oauth2/auth"
             client_email = Env("GOOGLE_DRIVE_OAUTH_CLIENT_EMAIL")
             client_id = Env("GOOGLE_DRIVE_OAUTH_CLIENT_ID")
             private_key = Env("GOOGLE_DRIVE_OAUTH_PRIVATE_KEY")
             private_key_id = Env("GOOGLE_DRIVE_OAUTH_PRIVATE_KEY_ID")
             project_id = Env("GOOGLE_DRIVE_OAUTH_PROJECT_ID")
-            token_uri = Env("GOOGLE_DRIVE_OAUTH_TOKEN_URI")
-            universe_domain = Env("GOOGLE_DRIVE_OAUTH_UNIVERSE_DOMAIN")
+            token_uri = "https://oauth2.googleapis.com/token"
+            universe_domain = "googleapis.com"
             scopes = [Google.Apis.Drive.v3.DriveService.Scope.DriveReadonly]
           }
           |> GoogleDrive.initialize
