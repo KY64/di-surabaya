@@ -26,7 +26,7 @@ type Function() =
     member __.FunctionHandler (input: Request) (_: ILambdaContext) =
         // Google Drive will stop pushing notification after 1 day and requires a reset to expire in another 1 day
         // Reference: https://developers.google.com/drive/api/guides/push#optional-properties
-        let maxGoogleDriveNotificationExpiration = System.DateTimeOffset.Now.ToUnixTimeSeconds() + 86400L
+        let maxGoogleDriveNotificationExpiration = System.DateTimeOffset.Now.ToUnixTimeMilliseconds() + 86400000L
         let googleDriveFolderId = Env("DRIVE_FOLDER_ID")
         let googleDriveNotificationChannel =
           new Google.Apis.Drive.v3.Data.Channel(
