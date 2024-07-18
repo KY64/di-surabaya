@@ -11,6 +11,10 @@ open GoogleDrive
 [<assembly: LambdaSerializer(typeof<Amazon.Lambda.Serialization.SystemTextJson.DefaultLambdaJsonSerializer>)>]
 ()
 
+type Request = {
+  headers: Map<string, string>
+  body: string
+}
 
 type Function() =
     /// <summary>
@@ -19,7 +23,7 @@ type Function() =
     /// <param name="input">The event for the Lambda function handler to process.</param>
     /// <param name="context">The ILambdaContext that provides methods for logging and describing the Lambda environment.</param>
     /// <returns></returns>
-    member __.FunctionHandler (input: string) (_: ILambdaContext) =
+    member __.FunctionHandler (input: Request) (_: ILambdaContext) =
         // Google Drive will stop pushing notification after 1 day and requires a reset to expire in another 1 day
         // Reference: https://developers.google.com/drive/api/guides/push#optional-properties
         let maxGoogleDriveNotificationExpiration = System.DateTimeOffset.Now.ToUnixTimeSeconds() + 86400L
