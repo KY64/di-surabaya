@@ -33,10 +33,10 @@ jobs:
         uses: actions/checkout@v4
       - name: Setup Node.js environment
         uses: actions/setup-node@v4.0.2
-        working-directory: ./src/Web
         with:
           node-version: 20.x
           cache: npm
+          cache-dependency-path: ./src/Web/package-lock.json
       - name: Build pages
         run: npm i && node render.js
         working-directory: ./src/Web
@@ -48,10 +48,8 @@ jobs:
       - id: upload-artifact
         name: Upload artifact
         uses: actions/upload-pages-artifact@v3
-        working-directory: ./src/Web
         with:
-          # Upload entire repository
-          path: "."
+          path: "./src/Web"
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
