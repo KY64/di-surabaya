@@ -1,0 +1,112 @@
+:root {
+  --primary-background-color: #ffe2b7;
+  --primary-font-color: #2f652f;
+
+  background: var(--primary-background-color);
+  color: var(--primary-font-color);
+  font-family: sans-serif;
+  margin-bottom: 22px;
+}
+
+a {
+  text-decoration: none;
+}
+
+hr {
+  width: 220px;
+  margin: 4em auto 3em auto;
+  border: 1px solid;
+}
+
+ul#social-accounts > li {
+  padding-bottom: 18px;
+  margin-left: -1.5em;
+}
+
+ul#social-accounts > li > a {
+  color: var(--primary-background-color);
+  background: var(--primary-font-color);
+  padding: 6px 14px;
+  border-radius: 50px;
+}
+
+ul#social-accounts > ul {
+  margin-bottom: 1.3em;
+  list-style: none;
+}
+
+ul#social-accounts > ul > li {
+  margin-left: -3em;
+}
+
+main,
+footer {
+  max-width: 960px;
+  margin: 0 auto;
+}
+
+.bold {
+  font-weight: 800;
+}
+
+.cursor-pointer {
+  cursor: pointer;
+}
+
+.embedded-map {
+  width: 100%;
+  height: 640px;
+  display: block;
+  padding: 20px 0;
+  border: 0;
+  margin: 0 auto;
+}
+
+.font-14 {
+  font-size: 14pt;
+}
+
+.form-btn {
+  background: var(--primary-font-color);
+  border: 0;
+  color: var(--primary-background-color);
+  display: block;
+  font-weight: 800;
+  margin: 20px auto;
+  padding: 10px 24px;
+}
+
+.map-collapsible {
+  font-size: 1.3em;
+  font-weight: 800;
+  margin-bottom: 14px;
+}
+
+.no-list-style {
+  list-style: none;
+}
+
+.pl-16 {
+  padding-left: 16px;
+}
+
+.source-text {
+  font-size: 12pt;
+  font-weight: normal;
+}
+
+.text-center {
+  text-align: center;
+}
+
+@media (max-width: 400px) {
+  .embedded-map {
+    height: 300px;
+  }
+}
+
+@media (max-width: 600px) {
+  .embedded-map {
+    height: 320px;
+  }
+}

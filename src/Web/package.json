@@ -1,0 +1,15 @@
+{
+  "name": "web",
+  "version": "1.0.0",
+  "description": "",
+  "private": true,
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "KY64",
+  "type": "module",
+  "license": "MIT",
+  "dependencies": {
+    "nunjucks": "^3.2.4"
+  }
+}

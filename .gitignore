@@ -10,6 +10,9 @@ nupkg/
 
 !.env.example
 
+# NodeJS
+node_modules
+
 # Visual Studio Code
 .vscode
 
