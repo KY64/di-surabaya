@@ -9,7 +9,7 @@ than clicking through different links.
 This repository contains the codebase that is used to build the website. The source code can be found inside
 the [src](./src) folder. There are 3 folders inside it:
 
-1. **Bot**: This folder contains source code of a bot that is used by admin to update information
+1. **Bot**: This folder contains source code of a bot that is used by admin to update information and receives notification
 2. **GoogleDriveNotificationReset**: This folder contains source code to reset Google Drive notification
 3. **Web**: This folder contains the source code of the website.
 
