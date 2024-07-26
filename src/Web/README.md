@@ -1,6 +1,6 @@
 # Web
 
-This folder contains the source code of di-surabaya website. It's build an HTML templating engine.
+This folder contains the source code of di-surabaya website. It's built using an HTML templating engine.
 
 ## Requirements
 
