@@ -55,7 +55,7 @@ Once it's done, we will see **index.html** as the output.
 di-surabaya is a plain and simple website. The goal of the website is to organize content
 with simple representation. This goal can be achieved with just HTML and CSS. However,
 some part of the content requires frequent update like the bus and train map. Since the
-map file change is beyond control of the website owner, so from the owner needs to follow
+map file change is beyond control of the website owner, so the owner needs to follow
 up the change by updating the map URL.
 
 The change can be done by updating the HTML file, but then it requires a new commit everytime
