@@ -6,7 +6,7 @@ project.lock.json
 .DS_Store
 *.pyc
 nupkg/
-.env
+*.env
 src/Web/index.html
 
 !.env.example
