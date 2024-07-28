@@ -1,4 +1,4 @@
-# Google Drive Notification Reset
+# Bot
 
 This folder contains source code of the bot that is used to do administrative task of the website.
 
