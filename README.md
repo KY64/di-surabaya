@@ -21,7 +21,7 @@ This project is made using the following tools:
 - [NodeJS](https://nodejs.org/en/download/prebuilt-installer) 20.12.2
 
 Below is the overview of diagram of the project
- 
+
 ![Architecture Overview Diagram](./public/architecture-overview.png)
 
 Since the website is just collecting information from different source, an automation is required to monitor
