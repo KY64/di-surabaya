@@ -14,26 +14,30 @@ type UpdateEnvironmentParams = {
   EnvironmentVariableValue: string
 }
 
-type RerunWorkflowAfterUpdateEnvironmentParams = {
+type RunWorkflowAfterUpdateEnvironmentParams = {
   Owner: string
   Repository: string
   RepositoryEnvironment: string
   EnvironmentVariableName: string
   EnvironmentVariableValue: string
-  WorkflowId: string
+  WorkflowFile: string
 }
 
-type RerunWorkflowParams = {
+type RunWorkflowParams = {
   Owner: string
   Repository: string
-  WorkflowId: string
+  WorkflowFile: string
+}
+
+type RunWorkflowRequest = {
+  Ref: string
 }
 
 type UpdateMapParams = {
   Owner: string
   Repository: string
   RepositoryEnvironment: string
-  WorkflowId: string
+  WorkflowFile: string
 }
 
 type UpdateEnvironmentRequest = {
@@ -107,8 +111,11 @@ type ApiRequest =
       Ok $"Successfully update environment variable '{data.EnvironmentVariableName}' to '{data.EnvironmentVariableValue}'"
     | Error result ->
       Error $"Failed to update environment variable: {result.ReasonPhrase}"
-  static rerunWorkflow (data: RerunWorkflowParams) (accessToken: string) =
-    let endpoint = $"/repos/{data.Owner}/{data.Repository}/actions/runs/{data.WorkflowId}/rerun"
+  static runWorkflow (data: RunWorkflowParams) (accessToken: string) =
+    let endpoint = $"/repos/{data.Owner}/{data.Repository}/actions/workflows/{data.WorkflowFile}/dispatches"
+    let body: RunWorkflowRequest = {
+      Ref = "main" // Always run workflow from 'main' branch
+    }
     let response =
       {
         Headers = [
@@ -116,16 +123,16 @@ type ApiRequest =
           ("User-Agent", appName);
           ("Authorization", $"Bearer {accessToken}")
         ]
-        Content = None
+        Content = Some (System.Net.Http.Json.JsonContent.Create(inputValue=body, options=Constants.jsonDeserializeOptions))
       }
       |> githubApi endpoint System.Net.Http.HttpMethod.Post
     match response.Result with
     | Ok _ ->
-      Ok $"Successfully rerun workflow job '{data.WorkflowId}'"
+      Ok $"Successfully rerun workflow job '{data.WorkflowFile}'"
     | Error result ->
-      Error $"Failed to rerun workflow job '{data.WorkflowId}': {result.ReasonPhrase}"
+      Error $"Failed to rerun workflow job '{data.WorkflowFile}': {result.ReasonPhrase}"
 
-let private rerunWorkflowJobAfterUpdateEnvironment (config: RerunWorkflowAfterUpdateEnvironmentParams) =
+let private runWorkflowJobAfterUpdateEnvironment (config: RunWorkflowAfterUpdateEnvironmentParams) =
   let updateEnvironmentParams: UpdateEnvironmentParams = 
     {
       Owner = config.Owner
@@ -134,11 +141,11 @@ let private rerunWorkflowJobAfterUpdateEnvironment (config: RerunWorkflowAfterUp
       EnvironmentVariableName = config.EnvironmentVariableName
       EnvironmentVariableValue = config.EnvironmentVariableValue
     }
-  let rerunWorkflowJobParams: RerunWorkflowParams =
+  let runWorkflowJobParams: RunWorkflowParams =
     {
       Owner = config.Owner
       Repository = config.Repository
-      WorkflowId = config.WorkflowId
+      WorkflowFile = config.WorkflowFile
     }
   let accessToken = ApiRequest.createAccessToken clientId appId
   match
@@ -147,7 +154,7 @@ let private rerunWorkflowJobAfterUpdateEnvironment (config: RerunWorkflowAfterUp
   with
   | Ok _ ->
     accessToken
-    |> Result.bind (ApiRequest.rerunWorkflow rerunWorkflowJobParams)
+    |> Result.bind (ApiRequest.runWorkflow runWorkflowJobParams)
     |> Util.getResultValue
   | Error error ->
     error
@@ -170,9 +177,9 @@ let updateMap (config: UpdateMapParams): Types.CommandHandler =
         RepositoryEnvironment = config.RepositoryEnvironment
         EnvironmentVariableName = name
         EnvironmentVariableValue = mapId
-        WorkflowId = config.WorkflowId
+        WorkflowFile = config.WorkflowFile
       }
-      |> rerunWorkflowJobAfterUpdateEnvironment
+      |> runWorkflowJobAfterUpdateEnvironment
     | None ->
       $"Unknown map type: only '{Types.Map.Bus.ToString()}' and '{Types.Map.Train.ToString()}' supported"
   Types.CommandHandler.UpdateMap execute
