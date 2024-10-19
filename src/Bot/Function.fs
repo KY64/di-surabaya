@@ -54,7 +54,7 @@ type Function() =
               Owner = Config.get Config.Env.GITHUB_USERNAME
               Repository = Config.get Config.Env.GITHUB_REPOSITORY
               RepositoryEnvironment = Config.get Config.Env.GITHUB_REPOSITORY_ENVIRONMENT
-              WorkflowId = Config.get Config.Env.GITHUB_ACTION_WORKFLOW_ID
+              WorkflowFile = Config.get Config.Env.GITHUB_ACTION_WORKFLOW_FILE
             }
           updateParams
           |> Api.Github.updateMap
