@@ -1,0 +1,31 @@
+{
+  "contacts": [
+    {
+      "name": "Layanan Darurat / Command Center",
+      "number": "112",
+      "source": "https://jdih.surabaya.go.id/peraturan/4282"
+    },
+    {
+      "name": "Ambulan",
+      "number": "118"
+    },
+    {
+      "name": "Pelayanan & Pengaduan Masyarakat",
+      "number": "+6281230257000",
+      "email": "mediacenter@surabaya.go.id",
+      "source": "https://mediacenter.surabaya.go.id/"
+    },
+    {
+      "name": "Dinas Pendidikan Surabaya",
+      "number": "+6281259896163",
+      "email": "dispendik@surabaya.go.id",
+      "source": "https://dispendik.surabaya.go.id/about/"
+    },
+    {
+      "name": "Whistleblowing System",
+      "number": "0315312144",
+      "email": "inspektorat@surabaya.go.id",
+      "source": "https://wbs.surabaya.go.id/"
+    }
+  ]
+}

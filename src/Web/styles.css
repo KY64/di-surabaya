@@ -18,6 +18,15 @@ hr {
   border: 1px solid;
 }
 
+table {
+  border-collapse: collapse;
+}
+
+th, td {
+  border: 1px solid black;
+  padding: 8px 18px;
+}
+
 ul#social-accounts > li {
   padding-bottom: 18px;
   margin-left: -1.5em;

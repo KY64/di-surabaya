@@ -14,7 +14,7 @@
       <h2>Rute Transportasi Publik</h2>
       <details class="map-collapsible pl-16 cursor-pointer" open>
         <summary>
-          Rute Bus
+          Rute Bus & Feeder
           <a
             rel="ugc nofollow"
             href="https://drive.google.com/file/d/{{BUS_MAP_FILE_ID}}/preview"
@@ -25,6 +25,7 @@
           </a>
         </summary>
         <iframe
+          title="Peta rute transportasi umum Surabaya"
           class="embedded-map"
           src="https://drive.google.com/file/d/{{BUS_MAP_FILE_ID}}/preview"
           allow="autoplay"
@@ -43,11 +44,38 @@
           </a>
         </summary>
         <iframe
+          title="Peta rute kereta komuter Surabaya"
           class="embedded-map"
           src="https://drive.google.com/file/d/{{TRAIN_MAP_FILE_ID}}/preview"
           allow="autoplay"
         ></iframe>
       </details>
+
+      <h2>Kontak</h2>
+      <table>
+        <tr>
+          <th scope="col">Kontak</th>
+          <th scope="col">Nomor Telpon</th>
+          <th scope="col">Email</th>
+        </tr>
+        {%- for contact in data.contacts -%}
+        <tr>
+          {% if contact.source %}
+            <td scope="row"><a href="{{contact.source}}" target="_blank">{{contact.name}}</a></td>
+          {% else %}
+            <td scope="row">{{contact.name}}</td>
+          {% endif %}
+
+          <td scope="row"><a href="tel:{{contact.number}}">{{contact.number}}</a></td>
+          <td scope="row">
+            {% if contact.email %}
+            <a href="mailto:{{contact.email}}">{{contact.email}}</a>
+            {% endif %}
+          </td>
+        </tr>
+        {%- endfor -%}
+      </table>
+
 
       <h2>Akun Sosial</h2>
       <ul id="social-accounts" class="no-list-style">
