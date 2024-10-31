@@ -12,6 +12,10 @@ a {
   text-decoration: none;
 }
 
+body {
+  line-height: 1.73em;
+}
+
 hr {
   width: 220px;
   margin: 4em auto 3em auto;
