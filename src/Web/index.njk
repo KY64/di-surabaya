@@ -11,27 +11,28 @@
     <meta property="og:description" content="Informasi penting dan cepat tentang transportasi dan layanan darurat di Surabaya.">
     <meta property="og:type" content="website">
     
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link rel="preload" href="styles.css" as="style">
+
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet" media="print" onload="this.media='all'">
+    
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
 
     <div class="container">
         
-        <!-- Header -->
         <header class="site-header">
             <div class="logo">
                 <h1>di<br>surabaya.</h1>
                 <p>Panduan Kota Pahlawan</p>
             </div>
-            <a href="https://github.com/KY64/di-surabaya" target="_blank" class="github-link">
+            <a href="https://github.com/KY64/di-surabaya" target="_blank" rel="noopener" class="github-link" aria-label="GitHub Repository">
                 <i class="fa-brands fa-github"></i>
             </a>
         </header>
 
         <main class="main-content">
 
-            <!-- Transport Section -->
             <section class="section" id="transportasi-surabaya">
                 <div class="section-header">
                     <h2 class="section-title">Transportasi</h2>
@@ -39,8 +40,7 @@
                 </div>
                 
                 <div class="transport-list" id="transportList">
-                    <!-- Item 1 -->
-                    <a href="https://drive.google.com/file/d/{{BUS_MAP_FILE_ID}}/view" target="_blank" class="transport-card search-item">
+                  <a href="https://drive.google.com/file/d/{{BUS_MAP_FILE_ID}}/view" target="_blank" rel="noopener" class="transport-card search-item">
                         <div class="transport-content">
                             <div>
                                 <h3 class="transport-title">Suroboyo Bus & Feeder</h3>
@@ -53,8 +53,7 @@
                         </div>
                     </a>
 
-                    <!-- Item 2 -->
-                    <a href="https://drive.google.com/file/d/{{TRAIN_MAP_FILE_ID}}/view" target="_blank" class="transport-card search-item">
+                    <a href="https://drive.google.com/file/d/{{TRAIN_MAP_FILE_ID}}/view" target="_blank" rel="noopener" class="transport-card search-item">
                         <div class="transport-content">
                             <div>
                                 <h3 class="transport-title">Kereta Komuter</h3>
@@ -69,7 +68,6 @@
                 </div>
             </section>
 
-            <!-- Emergency Section -->
             <section class="section" id="nomor-darurat-surabaya">
                 <div class="section-header">
                     <h2 class="section-title">Darurat</h2>
@@ -78,7 +76,7 @@
 
                 <div class="emergency-grid" id="emergencyList">
                     
-                  <a href="tel:112">
+                  <a href="tel:112" role="button">
                     <div class="grid-item search-item sos-default" title="Nomor Darurat Command Center Surabaya">
                         <div style="display: flex; justify-content: space-between;">
                             <i class="fa-solid fa-phone icon-sm"></i>
@@ -91,7 +89,7 @@
                     </div>
                   </a>
 
-                  <a href="tel:118">
+                  <a href="tel:118" role="button">
                     <div class="grid-item search-item sos-red" title="Nomor Darurat Ambulans">
                         <div style="display: flex; justify-content: space-between;">
                             <i class="fa-solid fa-truck-medical icon-sm"></i>
@@ -103,7 +101,7 @@
                     </div>
                   </a>
 
-                  <a href="tel:110">
+                  <a href="tel:110" role="button">
                     <div class="grid-item search-item sos-blue" title="Nomor Darurat Polisi">
                         <div style="display: flex; justify-content: space-between;">
                             <i class="fa-solid fa-shield-halved icon-sm"></i>
@@ -115,7 +113,7 @@
                     </div>
                   </a>
 
-                  <a href="tel:110">
+                  <a href="tel:110" role="button">
                     <div class="grid-item search-item sos-yellow" title="Nomor Darurat Pemadam Kebakaran">
                         <div style="display: flex; justify-content: space-between;">
                             <i class="fa-solid fa-fire-flame-curved icon-sm"></i>
@@ -129,34 +127,33 @@
                 </div>
 
                 <div class="emergency-links">
-                    <a href="https://surabaya.go.id" class="link-card search-item" title="Pemerintah Kota Surabaya" target="_blank">
+                    <a href="https://surabaya.go.id" class="link-card search-item" title="Pemerintah Kota Surabaya" target="_blank" rel="noopener">
                         <i class="fa-solid fa-star link-icon"></i>
                         <span class="link-text">Pemerintah Kota Surabaya</span>
                     </a>
-                    <a href="https://mediacenter.surabaya.go.id" class="link-card search-item" title="Layanan Pengaduan" target="_blank">
+                    <a href="https://mediacenter.surabaya.go.id" class="link-card search-item" title="Layanan Pengaduan" target="_blank" rel="noopener">
                         <i class="fa-solid fa-bullhorn link-icon"></i>
                         <span class="link-text">Layanan Pengaduan</span>
                     </a>
-                    <a href="https://wbs.surabaya.go.id" class="link-card search-item" title="Whistleblowing System Surabaya" target="_blank">
+                    <a href="https://wbs.surabaya.go.id" class="link-card search-item" title="Whistleblowing System Surabaya" target="_blank" rel="noopener">
                         <i class="fa-solid fa-user-secret link-icon"></i>
                         <span class="link-text">Whistleblowing System</span>
                     </a>
-                    <a href="https://linktr.ee/tfsurabaya" class="link-card search-item" title="Transportation for Surabaya (community)" target="_blank">
+                    <a href="https://linktr.ee/tfsurabaya" class="link-card search-item" title="Transportation for Surabaya (community)" target="_blank" rel="noopener">
                         <i class="fa-solid fa-bus link-icon"></i>
                         <span class="link-text">Transportation for Surabaya</span>
                     </a>
-                    <a href="https://www.suarasurabaya.net" class="link-card search-item" title="Radio Berita Surabaya" target="_blank">
+                    <a href="https://www.suarasurabaya.net" class="link-card search-item" title="Radio Berita Surabaya" target="_blank" rel="noopener">
                         <i class="fa-solid fa-radio link-icon"></i>
                         <span class="link-text">Radio Berita Surabaya</span>
                     </a>
-                    <a href="https://tourism.surabaya.go.id" class="link-card search-item" title="Turisme Surabaya" target="_blank">
+                    <a href="https://tourism.surabaya.go.id" class="link-card search-item" title="Turisme Surabaya" target="_blank" rel="noopener">
                         <i class="fa-solid fa-location-arrow link-icon"></i>
                         <span class="link-text">Turisme Surabaya</span>
                     </a>
                 </div>
             </section>
 
-            <!-- Social Section -->
             <section class="section" id="akun-resmi-surabaya">
                  <div class="section-header">
                     <h2 class="section-title">Akun Resmi</h2>
@@ -164,16 +161,16 @@
                 </div>
                 
                 <div class="social-container px-spacing" style="padding: 0 var(--spacing-mobile);" id="socialList">
-                    <a href="https://instagram.com/tourism.surabaya/" target="_blank" class="social-link pink search-item" title="Instagram Resmi Turisme di Surabaya">
+                    <a href="https://instagram.com/tourism.surabaya/" target="_blank" rel="noopener" class="social-link pink search-item" title="Instagram Resmi Turisme di Surabaya">
                         @tourism.surabaya
                     </a>
-                    <a href="https://instagram.com/surabaya/" target="_blank" class="social-link orange search-item" title="Instagram Resmi Pemerintah Kota Surabaya">
+                    <a href="https://instagram.com/surabaya/" target="_blank" rel="noopener" class="social-link orange search-item" title="Instagram Resmi Pemerintah Kota Surabaya">
                         @surabaya
                     </a>
-                    <a href="https://instagram.com/sapawargasby/" target="_blank" class="social-link blue search-item" title="Instagram Resmi Sapa Warga Surabaya">
+                    <a href="https://instagram.com/sapawargasby/" target="_blank" rel="noopener" class="social-link blue search-item" title="Instagram Resmi Sapa Warga Surabaya">
                         @sapawargasby
                     </a>
-                    <a href="https://instagram.com/dishubsurabaya/" target="_blank" class="social-link sky search-item" title="Instagram Resmi Dinas Perhubungan Surabaya">
+                    <a href="https://instagram.com/dishubsurabaya/" target="_blank" rel="noopener" class="social-link sky search-item" title="Instagram Resmi Dinas Perhubungan Surabaya">
                         @dishubsurabaya
                     </a>
                 </div>
@@ -181,7 +178,6 @@
 
         </main>
 
-        <!-- Footer -->
         <footer class="footer">
             <div class="footer-brand">Surabaya, Indonesia.</div>
             <div class="footer-copy">&copy; 2025 / Data Publik</div>
@@ -189,26 +185,16 @@
 
     </div>
 
-    <!-- Toast -->
-    <div id="toast">Copied to clipboard</div>
-
-    <script>
-        // Responsive Padding Fix for Social List inside Script to keep HTML clean
-        // (Optional: The inline style in HTML handles the padding, but for cleaner responsiveness we use a class)
+    <script defer>
         const socialList = document.getElementById('socialList');
-        if(window.innerWidth >= 768) {
-            socialList.style.paddingLeft = 'var(--spacing-desktop)';
-            socialList.style.paddingRight = 'var(--spacing-desktop)';
-        }
-        window.addEventListener('resize', () => {
-            if(window.innerWidth >= 768) {
-                socialList.style.paddingLeft = 'var(--spacing-desktop)';
-                socialList.style.paddingRight = 'var(--spacing-desktop)';
-            } else {
-                socialList.style.paddingLeft = 'var(--spacing-mobile)';
-                socialList.style.paddingRight = 'var(--spacing-mobile)';
-            }
-        });
+        const updatePadding = () => {
+            const paddingValue = window.innerWidth >= 768 ? 'var(--spacing-desktop)' : 'var(--spacing-mobile)';
+            socialList.style.paddingLeft = paddingValue;
+            socialList.style.paddingRight = paddingValue;
+        };
+
+        updatePadding();
+        window.addEventListener('resize', updatePadding);
     </script>
 </body>
 </html>
