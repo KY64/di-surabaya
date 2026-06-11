@@ -30,9 +30,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6.0.3
       - name: Setup Node.js environment
-        uses: actions/setup-node@v4.0.2
+        uses: actions/setup-node@v6.4.0
         with:
           node-version: 20.x
           cache: npm
@@ -44,15 +44,15 @@ jobs:
           BUS_MAP_FILE_ID: ${{ vars.BUS_MAP_FILE_ID }}
           TRAIN_MAP_FILE_ID: ${{ vars.TRAIN_MAP_FILE_ID }}
       - name: Setup Pages
-        uses: actions/configure-pages@v5
+        uses: actions/configure-pages@v6.0.0
       - id: upload-artifact
         name: Upload artifact
-        uses: actions/upload-pages-artifact@v3
+        uses: actions/upload-pages-artifact@v5.0.0
         with:
           path: "./src/Web"
       - name: Deploy to GitHub Pages
         id: deployment
-        uses: actions/deploy-pages@v4
+        uses: actions/deploy-pages@v5.0.0
       - name: Remove artifact
         run: curl -L -X DELETE -H $ACCEPT_HEADER -H $AUTHORIZATION_HEADER -H $GITHUB_VERSION_HEADER https://api.github.com/repos/$GITHUB_REPOSITORY/actions/artifacts/${{ steps.upload-artifact.outputs.artifact_id }}
         env:
