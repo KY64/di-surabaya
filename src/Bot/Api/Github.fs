@@ -72,7 +72,7 @@ let private createJwt (clientId: string) =
   handler.CreateToken(descriptor)
 
 type ApiRequest =
-  static createAccessToken (clientId: string) (appId: string) =
+  static member createAccessToken (clientId: string) (appId: string) =
     let jwt = createJwt clientId
     let endpoint = $"/app/installations/{appId}/access_tokens"
     let response =
@@ -90,7 +90,7 @@ type ApiRequest =
       Ok (System.Text.Json.JsonSerializer.Deserialize<AccessTokenResponse>(result.Content.ReadAsStringAsync().Result).token)
     | Error result ->
       Error $"Failed to get access token: {result.ReasonPhrase}"
-  static updateEnvironmentVariable (data: UpdateEnvironmentParams) (accessToken: string) =
+  static member updateEnvironmentVariable (data: UpdateEnvironmentParams) (accessToken: string) =
     let endpoint = $"/repos/{data.Owner}/{data.Repository}/environments/{data.RepositoryEnvironment}/variables/{data.EnvironmentVariableName}"
     let body: UpdateEnvironmentRequest = {
       Name = data.EnvironmentVariableName
@@ -111,7 +111,7 @@ type ApiRequest =
       Ok $"Successfully update environment variable '{data.EnvironmentVariableName}' to '{data.EnvironmentVariableValue}'"
     | Error result ->
       Error $"Failed to update environment variable: {result.ReasonPhrase}"
-  static runWorkflow (data: RunWorkflowParams) (accessToken: string) =
+  static member runWorkflow (data: RunWorkflowParams) (accessToken: string) =
     let endpoint = $"/repos/{data.Owner}/{data.Repository}/actions/workflows/{data.WorkflowFile}/dispatches"
     let body: RunWorkflowRequest = {
       Ref = "main" // Always run workflow from 'main' branch

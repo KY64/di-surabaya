@@ -17,7 +17,7 @@ the [src](./src) folder. There are 3 folders inside it:
 
 This project is made using the following tools:
 
-- [.NET](https://dotnet.microsoft.com/en-us/download/dotnet/8.0) 8.0.104
+- [.NET](https://dotnet.microsoft.com/en-us/download/dotnet/10.0) 10.x
 - [NodeJS](https://nodejs.org/en/download/prebuilt-installer) 20.12.2
 
 Below is the overview of diagram of the project

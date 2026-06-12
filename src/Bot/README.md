@@ -4,7 +4,7 @@ This folder contains source code of the bot that is used to do administrative ta
 
 ## Requirements
 
-- [.NET 8](https://dotnet.microsoft.com/en-us/download/dotnet/8.0)
+- [.NET 10](https://dotnet.microsoft.com/en-us/download/dotnet/10.0)
 
 ## How To Use
 
