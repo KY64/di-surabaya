@@ -11,6 +11,9 @@
     <meta property="og:description" content="Informasi penting dan cepat tentang transportasi dan layanan darurat di Surabaya.">
     <meta property="og:type" content="website">
     
+    <link rel="icon" href="assets/logo.svg" type="image/svg+xml">
+    <link rel="alternate icon" href="favicon.ico" sizes="any">
+
     <link rel="preload" href="styles.css" as="style">
 
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet" media="print" onload="this.media='all'">
@@ -23,7 +26,10 @@
         
         <header class="site-header">
             <div class="logo">
-                <h1>di<br>surabaya.</h1>
+                <div class="logo-brand">
+                    <img src="assets/logo.svg" alt="" class="site-logo" width="64" height="64">
+                    <h1>di<br>surabaya.</h1>
+                </div>
                 <p>Panduan Kota Pahlawan</p>
             </div>
             <a href="https://github.com/KY64/di-surabaya" target="_blank" rel="noopener" class="github-link" aria-label="GitHub Repository">
@@ -75,55 +81,22 @@
                 </div>
 
                 <div class="emergency-grid" id="emergencyList">
-                    
-                  <a href="tel:112" role="button">
-                    <div class="grid-item search-item sos-default" title="Nomor Darurat Command Center Surabaya">
+                  {% for contact in data.contacts %}
+                    {% if contact.category == "emergency" %}
+                    <a href="tel:{{ contact.number }}" role="button">
+                      <div class="grid-item search-item sos-{{ contact.style }}" title="Nomor Darurat {{ contact.name }}">
                         <div style="display: flex; justify-content: space-between;">
-                            <i class="fa-solid fa-phone icon-sm"></i>
-                            <i class="fa-solid fa-asterisk spinner"></i>
+                          <i class="fa-solid {{ contact.icon }} icon-sm"></i>
+                          {% if contact.spinner %}<i class="fa-solid fa-asterisk spinner"></i>{% endif %}
                         </div>
                         <div>
-                            <div class="sos-number">112</div>
-                            <div class="sos-label">Command Center</div>
+                          <div class="sos-number">{{ contact.number }}</div>
+                          <div class="sos-label">{{ contact.label }}</div>
                         </div>
-                    </div>
-                  </a>
-
-                  <a href="tel:118" role="button">
-                    <div class="grid-item search-item sos-red" title="Nomor Darurat Ambulans">
-                        <div style="display: flex; justify-content: space-between;">
-                            <i class="fa-solid fa-truck-medical icon-sm"></i>
-                        </div>
-                        <div>
-                            <div class="sos-number">118</div>
-                            <div class="sos-label">Ambulans</div>
-                        </div>
-                    </div>
-                  </a>
-
-                  <a href="tel:110" role="button">
-                    <div class="grid-item search-item sos-blue" title="Nomor Darurat Polisi">
-                        <div style="display: flex; justify-content: space-between;">
-                            <i class="fa-solid fa-shield-halved icon-sm"></i>
-                        </div>
-                        <div>
-                            <div class="sos-number">110</div>
-                            <div class="sos-label">Polisi</div>
-                        </div>
-                    </div>
-                  </a>
-
-                  <a href="tel:110" role="button">
-                    <div class="grid-item search-item sos-yellow" title="Nomor Darurat Pemadam Kebakaran">
-                        <div style="display: flex; justify-content: space-between;">
-                            <i class="fa-solid fa-fire-flame-curved icon-sm"></i>
-                        </div>
-                        <div>
-                            <div class="sos-number">113</div>
-                            <div class="sos-label">Kebakaran</div>
-                        </div>
-                    </div>
-                  </a>
+                      </div>
+                    </a>
+                    {% endif %}
+                  {% endfor %}
                 </div>
 
                 <div class="emergency-links">

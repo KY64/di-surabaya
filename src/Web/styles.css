@@ -80,6 +80,23 @@ a {
   }
 }
 
+.logo-brand {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+.site-logo {
+  width: 3.5rem;
+  height: 3.5rem;
+  flex: none;
+}
+@media (min-width: 768px) {
+  .site-logo {
+    width: 4rem;
+    height: 4rem;
+  }
+}
+
 .logo h1 {
   font-family: var(--font-display);
   font-weight: 700;

@@ -3,11 +3,36 @@
     {
       "name": "Layanan Darurat / Command Center",
       "number": "112",
+      "category": "emergency",
+      "label": "Command Center",
+      "icon": "fa-phone",
+      "style": "default",
+      "spinner": true,
       "source": "https://jdih.surabaya.go.id/peraturan/4282"
     },
     {
-      "name": "Ambulan",
-      "number": "118"
+      "name": "Ambulans",
+      "number": "118",
+      "category": "emergency",
+      "label": "Ambulans",
+      "icon": "fa-truck-medical",
+      "style": "red"
+    },
+    {
+      "name": "Polisi",
+      "number": "110",
+      "category": "emergency",
+      "label": "Polisi",
+      "icon": "fa-shield-halved",
+      "style": "blue"
+    },
+    {
+      "name": "Pemadam Kebakaran",
+      "number": "113",
+      "category": "emergency",
+      "label": "Kebakaran",
+      "icon": "fa-fire-flame-curved",
+      "style": "yellow"
     },
     {
       "name": "Pelayanan & Pengaduan Masyarakat",
