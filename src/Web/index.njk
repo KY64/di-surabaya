@@ -26,14 +26,11 @@
         
         <header class="site-header">
             <div class="logo">
-                <div class="logo-brand">
-                    <img src="assets/logo.svg" alt="" class="site-logo" width="64" height="64">
-                    <h1>di<br>surabaya.</h1>
-                </div>
+                <h1>di<br>surabaya.</h1>
                 <p>Panduan Kota Pahlawan</p>
             </div>
-            <a href="https://github.com/KY64/di-surabaya" target="_blank" rel="noopener" class="github-link" aria-label="GitHub Repository">
-                <i class="fa-brands fa-github"></i>
+            <a href="#transportasi-surabaya" class="masthead-logo" aria-label="Kembali ke direktori panduan kota">
+                <img src="assets/logo.svg" alt="Logo di Surabaya" class="site-logo" width="148" height="120">
             </a>
         </header>
 
@@ -83,16 +80,13 @@
                 <div class="emergency-grid" id="emergencyList">
                   {% for contact in data.contacts %}
                     {% if contact.category == "emergency" %}
-                    <a href="tel:{{ contact.number }}" role="button">
+                    <a href="tel:{{ contact.number }}" role="button" class="emergency-card-link">
                       <div class="grid-item search-item sos-{{ contact.style }}" title="Nomor Darurat {{ contact.name }}">
-                        <div style="display: flex; justify-content: space-between;">
-                          <i class="fa-solid {{ contact.icon }} icon-sm"></i>
-                          {% if contact.spinner %}<i class="fa-solid fa-asterisk spinner"></i>{% endif %}
-                        </div>
                         <div>
                           <div class="sos-number">{{ contact.number }}</div>
                           <div class="sos-label">{{ contact.label }}</div>
                         </div>
+                        <span class="emergency-symbol" aria-hidden="true">◎</span>
                       </div>
                     </a>
                     {% endif %}
@@ -101,27 +95,27 @@
 
                 <div class="emergency-links">
                     <a href="https://surabaya.go.id" class="link-card search-item" title="Pemerintah Kota Surabaya" target="_blank" rel="noopener">
-                        <i class="fa-solid fa-star link-icon"></i>
+                        <span class="service-arrow" aria-hidden="true">↗</span>
                         <span class="link-text">Pemerintah Kota Surabaya</span>
                     </a>
                     <a href="https://mediacenter.surabaya.go.id" class="link-card search-item" title="Layanan Pengaduan" target="_blank" rel="noopener">
-                        <i class="fa-solid fa-bullhorn link-icon"></i>
+                        <span class="service-arrow" aria-hidden="true">↗</span>
                         <span class="link-text">Layanan Pengaduan</span>
                     </a>
                     <a href="https://wbs.surabaya.go.id" class="link-card search-item" title="Whistleblowing System Surabaya" target="_blank" rel="noopener">
-                        <i class="fa-solid fa-user-secret link-icon"></i>
+                        <span class="service-arrow" aria-hidden="true">↗</span>
                         <span class="link-text">Whistleblowing System</span>
                     </a>
                     <a href="https://linktr.ee/tfsurabaya" class="link-card search-item" title="Transportation for Surabaya (community)" target="_blank" rel="noopener">
-                        <i class="fa-solid fa-bus link-icon"></i>
+                        <span class="service-arrow" aria-hidden="true">↗</span>
                         <span class="link-text">Transportation for Surabaya</span>
                     </a>
                     <a href="https://www.suarasurabaya.net" class="link-card search-item" title="Radio Berita Surabaya" target="_blank" rel="noopener">
-                        <i class="fa-solid fa-radio link-icon"></i>
+                        <span class="service-arrow" aria-hidden="true">↗</span>
                         <span class="link-text">Radio Berita Surabaya</span>
                     </a>
                     <a href="https://tourism.surabaya.go.id" class="link-card search-item" title="Turisme Surabaya" target="_blank" rel="noopener">
-                        <i class="fa-solid fa-location-arrow link-icon"></i>
+                        <span class="service-arrow" aria-hidden="true">↗</span>
                         <span class="link-text">Turisme Surabaya</span>
                     </a>
                 </div>
@@ -133,41 +127,34 @@
                     <span class="section-tag">NET</span>
                 </div>
                 
-                <div class="social-container px-spacing" style="padding: 0 var(--spacing-mobile);" id="socialList">
-                    <a href="https://instagram.com/tourism.surabaya/" target="_blank" rel="noopener" class="social-link pink search-item" title="Instagram Resmi Turisme di Surabaya">
+                <nav class="social-container" id="socialList" aria-label="Akun Instagram resmi">
+                    <a href="https://instagram.com/tourism.surabaya/" target="_blank" rel="noopener" class="social-link search-item" title="Instagram Resmi Turisme di Surabaya">
                         @tourism.surabaya
                     </a>
-                    <a href="https://instagram.com/surabaya/" target="_blank" rel="noopener" class="social-link orange search-item" title="Instagram Resmi Pemerintah Kota Surabaya">
+                    <a href="https://instagram.com/surabaya/" target="_blank" rel="noopener" class="social-link search-item" title="Instagram Resmi Pemerintah Kota Surabaya">
                         @surabaya
                     </a>
-                    <a href="https://instagram.com/sapawargasby/" target="_blank" rel="noopener" class="social-link blue search-item" title="Instagram Resmi Sapa Warga Surabaya">
+                    <a href="https://instagram.com/sapawargasby/" target="_blank" rel="noopener" class="social-link search-item" title="Instagram Resmi Sapa Warga Surabaya">
                         @sapawargasby
                     </a>
-                    <a href="https://instagram.com/dishubsurabaya/" target="_blank" rel="noopener" class="social-link sky search-item" title="Instagram Resmi Dinas Perhubungan Surabaya">
+                    <a href="https://instagram.com/dishubsurabaya/" target="_blank" rel="noopener" class="social-link search-item" title="Instagram Resmi Dinas Perhubungan Surabaya">
                         @dishubsurabaya
                     </a>
-                </div>
+                </nav>
             </section>
 
         </main>
 
         <footer class="footer">
             <div class="footer-brand">Surabaya, Indonesia.</div>
+            <a href="https://github.com/KY64/di-surabaya" target="_blank" rel="noopener" class="footer-github" aria-label="Buka repositori GitHub di-surabaya">
+                <i class="fa-brands fa-github" style="font-size: 14pt" aria-hidden="true"></i>
+                <span>Source</span>
+            </a>
             <div class="footer-copy">&copy; 2026 / Data Publik</div>
         </footer>
 
     </div>
 
-    <script defer>
-        const socialList = document.getElementById('socialList');
-        const updatePadding = () => {
-            const paddingValue = window.innerWidth >= 768 ? 'var(--spacing-desktop)' : 'var(--spacing-mobile)';
-            socialList.style.paddingLeft = paddingValue;
-            socialList.style.paddingRight = paddingValue;
-        };
-
-        updatePadding();
-        window.addEventListener('resize', updatePadding);
-    </script>
 </body>
 </html>
