@@ -12,11 +12,12 @@
     },
     {
       "name": "Ambulans",
-      "number": "118",
+      "number": "119",
       "category": "emergency",
       "label": "Ambulans",
       "icon": "fa-truck-medical",
-      "style": "red"
+      "style": "red",
+      "source": "https://www.kemkes.go.id/"
     },
     {
       "name": "Polisi",
@@ -24,7 +25,8 @@
       "category": "emergency",
       "label": "Polisi",
       "icon": "fa-shield-halved",
-      "style": "blue"
+      "style": "blue",
+      "source": "https://polri.go.id/110"
     },
     {
       "name": "Pemadam Kebakaran",
@@ -32,7 +34,8 @@
       "category": "emergency",
       "label": "Kebakaran",
       "icon": "fa-fire-flame-curved",
-      "style": "yellow"
+      "style": "yellow",
+      "source": "https://layanan112.komdigi.go.id/tentang"
     },
     {
       "name": "Pelayanan & Pengaduan Masyarakat",
